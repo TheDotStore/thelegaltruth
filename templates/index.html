@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+    <title>LegalEase.</title>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="loader" id="loader"></div>
+
+    <header>
+        <nav>
+            <div class="navigationbar">
+                <div class="logo">
+                    <p>LegalEase.</p>
+                </div>
+                <div class="links">
+                    <ul class="nav">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#" onclick="document.getElementById('storyForm').style.display = 'block';">Find the Truth Now</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" target="_blank" href="https://docs.google.com/presentation/d/1JZgh5WDQIJbs0XJOhAQXyrL7BIOz-qzL97QriQT3ph4/edit#slide=id.g24421e47d72_0_0">Buinsess Pitch</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+    </header>
+    <div class="webcontent">
+        <p class="heading">Summarising Legal Documents and Helping You Find the Truth</p>
+        <p class="smallheading">Powered by AI and Shivam, ishan, Kunal...</p>
+        <button type="button" class="btn btn-primary mt-3" onclick="document.getElementById('storyForm').style.display = 'block';">Find the Truth Now</button>
+    </div>
+
+    <div class="storyForm" id="storyForm" style="display: none;">
+      <h5>Upload your Legal Document</h5>
+      <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="post">
+          <div class="mb-3">
+              <label for="fileInput" class="form-label">Please upload the PDF document</label>
+              <input type="file" class="form-control" id="fileInput" name="file" accept=".pdf">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <div id="summaryOutput" class="alert alert-info" style="display:none;"></div>
+          
+          <!-- Insert the chat interface here, within the summary output box -->
+          <div id="chatInterface" style="display:none;">
+              <div class="mb-3">
+                  <label for="chatInput" class="form-label">Ask your question:</label>
+                  <input type="text" class="form-control" id="chatInput" placeholder="Type your question here...">
+              </div>
+              <button type="button" class="btn btn-primary mt-3" onclick="sendChat()">Send</button>
+              <div id="chatResponses" class="alert alert-secondary" style="margin-top: 10px;"></div>
+              </div>
+              </form>
+              </div>
+              <script>
+                function sendChat() {
+                    const chatInput = document.getElementById('chatInput');
+                    const chatResponses = document.getElementById('chatResponses');
+                    fetch('/chat', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({query: chatInput.value})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        chatResponses.innerText = data.answer; // Display the chatbot's response
+                        chatInput.value = ''; // Clear the input after sending
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            
+                document.getElementById('uploadForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(this);
+                    const loader = document.getElementById('loader');
+                    const summaryOutput = document.getElementById('summaryOutput');
+                    const chatInterface = document.getElementById('chatInterface');
+            
+                    // Display the loader
+                    loader.style.display = 'block';
+            
+                    fetch('/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        // Hide the loader when data is received
+                        loader.style.display = 'none';
+                        summaryOutput.innerText = data;
+                        summaryOutput.style.display = 'block';
+                        chatInterface.style.display = 'block'; // Display the chat interface inside the summary box
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Hide the loader on error too
+                        loader.style.display = 'none';
+                    });
+                });
+            </script>
+            
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+            <script src="static/particles.js"></script>
+            <script src="static/app.js"></script>
+</body>    
+</html>        

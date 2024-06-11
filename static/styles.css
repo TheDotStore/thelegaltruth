@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    background-color: #0b1121;
+}
+
+section{
+    width: 100%;
+    height: 100vh;
+}
+
+.navigationbar{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+    padding: 28px;
+    /* background-color: #; */
+}
+
+.navigationbar .logo p{
+    font-weight: bold;
+    font-size: large;
+    color: #fff;
+}
+
+.webcontent{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.webcontent .heading{
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.webcontent .smallheading{
+    color: #7d7d7d;
+}
+
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    background-color: #0b1121;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+
+.storyForm {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+    transition: 0.5s;
+    max-width: 500px;
+    padding: 20px;
+    background-color: white;
+    margin-top: 50px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.storyOutput {
+    position: inherit;
+    width: 100%;
+    height: auto;
+    overflow: scroll;
+    opacity: 0;
+    margin-top: 50px;
+    transition: opacity 1s ease-in-out, height 1s ease-in-out;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 1500;
+    transform: translate(-50%, -50%);
+    display: none; /* Hidden by default */
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
