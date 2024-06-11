@@ -10,7 +10,7 @@ pipeline {
        stage('Clone Repository') {
             steps {
                     echo 'Starting Git Clone stage'
-                     git branch: 'main' , url: 'https://github.com/TheDotStore/thelegaltruth.git', credentialsId: 'github_legalease'
+                     git branch: 'main' , url: 'https://${github-pat}@github.com/TheDotStore/thelegaltruth.git', credentialsId: 'github_legalease'
                     echo 'Finished Git Clone stage'
                 }
         }
