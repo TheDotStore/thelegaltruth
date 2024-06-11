@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    environment {
+    GIT_REPO = 'github.com/kunal21330/thelegaltruth.git'
+    GIT_CREDENTIALS_ID = 'github-pat' // The ID of the credential you created
+    DOCKER_IMAGE = 'kunal21330/thelegaltruth'
+    }
+
+    stages {
+       stage('Clone Repository') {
+            steps {
+                    echo 'Starting Git Clone stage'
+                     git branch: 'main' , url: 'https://github.com/kunal21330/thelegaltruth.git', credentialsId: 'github_legalease'
+                    echo 'Finished Git Clone stage'
+                }
+        }
+        stage('Build') {
+            steps {
+            
+               script {
+                    echo 'Starting Docker Build stage'
+                    
+                        // Build the Docker image
+                        sh "docker build -t ${DOCKER_IMAGE}:latest ."
+
+                    echo 'Finished Docker Build stage'
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                echo "pushing image on docker hub"
+                withCredentials([usernamePassword(credentialsId:"docker-hub", usernameVariable:'dockerhubuser', passwordVariable: 'dockerhubpass')]){
+                    sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
+                    sh "docker push ${DOCKER_IMAGE}:latest"
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo 'deploying on AWS server'
+                sh "docker-compose down"
+                sh "docker-compose up -d"
+            }
+        }
+    }
+}
