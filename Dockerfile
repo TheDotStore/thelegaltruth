@@ -24,7 +24,7 @@ WORKDIR /myapp
 
 COPY . .
 
-ENV OPENAI_API_KEY="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"
+ENV OPENAI_API_KEY="sk-proj-aF0Qm3FL0k2rpWVn6MZiT3BlbkFJblLhIPzDk7g6ATJxklCg"
 
 # Install dependencies
 RUN pip install -r requirements.txt
